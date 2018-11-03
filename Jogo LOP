@@ -1,0 +1,43 @@
+var x = 100;
+var y = 100;
+var d = 100;
+var c = 100;
+function setup() {
+  createCanvas(300, 300);
+	stroke(255);
+	frameRate(60);
+}
+
+function draw() {
+  background(0);
+  if (keyIsDown(LEFT_ARROW))
+    x-=4;
+
+  if (keyIsDown(RIGHT_ARROW))
+    x+=4;
+
+  if (keyIsDown(UP_ARROW))
+    y-=4;
+
+  if (keyIsDown(DOWN_ARROW))
+    y+=4;
+	
+	if (y < 0 ) { y = 0}
+	if (y > 289){ y = 289}
+	if (x < 0){x = 0}
+	if (x > 289){x =289}
+	
+	d = d - 1;
+	if (d < 0){
+	d = height;
+	}
+	
+  rect(x, y, 10, 10);
+	line(0, d, width, d);
+	
+}
+// a ideia eh que o quadrado deve passar por um buraco, ainda a ser implementado, na linha
+// conforme a dificuldade aumenta, aumentam tambem o numero de linhase sua velocidade
+// criaremos uma linha preta com 20 pixeis de largura sobre a linha branca e testaremos colisao
+// se a colisao for apenas entre o quadrado e a linha, game over, caso seja entre a linha branca
+// + linha preta, o jogador saira ileso
