@@ -1,43 +1,120 @@
 var x = 100;
 var y = 100;
-var d = 100;
+var d = 0;
 var c = 100;
+var rw = 1;
+var xmw = 0;
+var rgb1, rgb2, rgb3;
+rgb1 = 255;
+rgb2 = 255;
+rgb3 = 255;
+var cnt = 0;
+var difc = 60
+var velo = 1
+var gameover = 0
+var ks1, ks2, ks3, ks4, ks5, ks6, ks7, ks8, ks9, ks10
+ks1 = 255;
+ks2 = ks1;
+ks3 = ks2;
+
+function Killswitch(){ //encerra o jogo
+
+	
+if (gameover == 1){
+ks1 = 0;
+ks2 = ks1;
+ks3 = ks2;
+rgb1 = 0
+rgb2 = 0
+rgb3 = 0
+fill(255, 255, 255)
+text('GAME OVER ', 150, 150, 100, 100);
+velo = 0
+}
+
+}
+
+function Randomizer(){  //gera um numero aleatorio para definir a posicao da barra preta
+rw = random(width - 120);
+	xmw = 120 + rw;
+	d = height;
+}
+
+function Counter(){
+
+}
+
+
 function setup() {
   createCanvas(300, 300);
 	stroke(255);
-	frameRate(60);
+	frameRate(difc);
+	
+	rw = random(width - 120);
+	xmw = 120 + rw;
+	d = height;
+	
 }
 
 function draw() {
   background(0);
-  if (keyIsDown(LEFT_ARROW))
-    x-=4;
+  if (keyIsDown(LEFT_ARROW))  //movimenta o jogador
+    x-=1;
 
   if (keyIsDown(RIGHT_ARROW))
-    x+=4;
+    x+=1;
 
   if (keyIsDown(UP_ARROW))
-    y-=4;
+    y-=1;
 
   if (keyIsDown(DOWN_ARROW))
-    y+=4;
+    y+=1;
 	
-	if (y < 0 ) { y = 0}
+	if (y == d - 9 | y == d - 8 | y == d - 7  && x < 60 + rw | x > xmw ){   // muda a cor da linha para testar colisao
+	rgb2 = 0;
+	rgb3 = 0;	
+	cnt = 0;
+	gameover = 1	
+	}
+	
+	if (d == 0){ //chama a funcao de randomizacao da posicao da barra preta e adiciona pontos 
+	Randomizer()
+	cnt = cnt + 100 ;	
+	
+	}
+	
+	
+	if (cnt > 200 ){
+	
+	velo = 2
+	}
+	
+ if (cnt > 400) {
+ velo = 3
+ }
+	
+Killswitch()	
+	
+	if (y < 0 ) { y = 0} //limita a movimentação do jogador ao tamanho do canvas
 	if (y > 289){ y = 289}
 	if (x < 0){x = 0}
 	if (x > 289){x =289}
 	
-	d = d - 1;
+	d = d - velo; // movimenta as linhas verticalmente
 	if (d < 0){
 	d = height;
 	}
+	fill(ks1,ks2,ks3);
+	text('Score: ' + cnt , 0, 0,100, 100 );
+	text('Dificulty: ' + velo, 0, 20, 100, 100);
+	noStroke()
+	fill(ks1,ks2,ks3);
+  rect(x, y, 10, 10); // jogador
+	stroke(rgb1,rgb2,rgb3);
+  strokeWeight(2);
+	line(0, d, width, d);//Cria a linha branca
 	
-  rect(x, y, 10, 10);
-	line(0, d, width, d);
-	
+	stroke(0, 0, 0);
+  strokeWeight(2);
+	line(60 + rw,(d), xmw,d)//Cria a linha preta que serve como passagem para o obejeto do jogador
 }
-// a ideia eh que o quadrado deve passar por um buraco, ainda a ser implementado, na linha
-// conforme a dificuldade aumenta, aumentam tambem o numero de linhase sua velocidade
-// criaremos uma linha preta com 20 pixeis de largura sobre a linha branca e testaremos colisao
-// se a colisao for apenas entre o quadrado e a linha, game over, caso seja entre a linha branca
-// + linha preta, o jogador saira ileso
